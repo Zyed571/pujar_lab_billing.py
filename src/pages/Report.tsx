@@ -177,7 +177,7 @@ const Report = () => {
               <div className="flex justify-end mt-12 print:mt-16">
                 <div className="text-center">
                   <div className="w-48 border-b border-gray-400 mb-2"></div>
-                  <p className="text-sm font-medium">Authorized Signature</p>
+                  <p className="text-sm font-medium">Doctor's Signature</p>
                   <p className="text-xs text-muted-foreground mt-1">Dr. Pujar Hospital</p>
                 </div>
               </div>
