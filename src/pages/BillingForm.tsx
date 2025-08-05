@@ -108,6 +108,7 @@ const BillingForm = () => {
   const [selectedPrice, setSelectedPrice] = useState<number | null>(null);
   const [selectedVariant, setSelectedVariant] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
+  const [isSelectOpen, setIsSelectOpen] = useState(false);
 
   const handleDoctorToggle = (doctor: string) => {
     setPatientData(prev => ({
@@ -301,7 +302,12 @@ const BillingForm = () => {
                     id="search"
                     placeholder="Search by test name or category..."
                     value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
+                    onChange={(e) => {
+                      setSearchQuery(e.target.value);
+                      if (e.target.value.trim()) {
+                        setIsSelectOpen(true);
+                      }
+                    }}
                     className="pl-10"
                   />
                 </div>
@@ -310,7 +316,12 @@ const BillingForm = () => {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="test">Select Test</Label>
-                  <Select value={selectedTest} onValueChange={setSelectedTest}>
+                  <Select 
+                    value={selectedTest} 
+                    onValueChange={setSelectedTest}
+                    open={isSelectOpen || (searchQuery.trim() !== "")}
+                    onOpenChange={setIsSelectOpen}
+                  >
                     <SelectTrigger>
                       <SelectValue placeholder="Choose diagnostic test" />
                     </SelectTrigger>
