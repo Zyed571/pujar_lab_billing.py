@@ -303,8 +303,23 @@ const BillingForm = () => {
                     placeholder="Search by test name or category..."
                     value={searchQuery}
                     onChange={(e) => {
-                      setSearchQuery(e.target.value);
-                      if (e.target.value.trim()) {
+                      const value = e.target.value;
+                      setSearchQuery(value);
+                      // Only auto-open dropdown if there are filtered results
+                      if (value.trim()) {
+                        const hasResults = DIAGNOSTIC_TESTS.some(test =>
+                          test.name.toLowerCase().includes(value.toLowerCase()) ||
+                          test.category.toLowerCase().includes(value.toLowerCase())
+                        );
+                        if (hasResults) {
+                          setIsSelectOpen(true);
+                        }
+                      } else {
+                        setIsSelectOpen(false);
+                      }
+                    }}
+                    onFocus={() => {
+                      if (searchQuery.trim()) {
                         setIsSelectOpen(true);
                       }
                     }}
