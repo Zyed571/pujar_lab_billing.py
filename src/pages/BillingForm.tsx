@@ -318,7 +318,34 @@ const BillingForm = () => {
                   <Label htmlFor="test">Select Test</Label>
                   <Select 
                     value={selectedTest} 
-                    onValueChange={setSelectedTest}
+                    onValueChange={(value) => {
+                      setSelectedTest(value);
+                      setIsSelectOpen(false);
+                      
+                      // Auto-add test when selected from search
+                      if (searchQuery.trim() !== "" && value) {
+                        const test = DIAGNOSTIC_TESTS.find(t => t.name === value);
+                        if (test && test.prices.length > 0) {
+                          const firstPrice = test.prices[0];
+                          const newTest = {
+                            name: test.name,
+                            price: firstPrice.price,
+                            variant: firstPrice.variant
+                          };
+                          
+                          setPatientData(prev => ({
+                            ...prev,
+                            selectedTests: [...prev.selectedTests, newTest]
+                          }));
+                          
+                          // Clear search and selections
+                          setSearchQuery("");
+                          setSelectedTest("");
+                          setSelectedPrice(null);
+                          setSelectedVariant("");
+                        }
+                      }
+                    }}
                     open={isSelectOpen || (searchQuery.trim() !== "")}
                     onOpenChange={setIsSelectOpen}
                   >
