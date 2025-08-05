@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Trash2, ArrowRight, User, Calendar, TestTube, Stethoscope } from "lucide-react";
+import { Plus, Trash2, ArrowRight, User, Calendar, TestTube, Stethoscope, Search } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface PatientData {
@@ -34,14 +34,61 @@ const DOCTORS = [
 ];
 
 const DIAGNOSTIC_TESTS = [
-  { name: "CBC", prices: [{ variant: "Standard", price: 300 }, { variant: "Premium", price: 350 }] },
-  { name: "Hb%", prices: [{ variant: "", price: 100 }] },
-  { name: "ESR", prices: [{ variant: "", price: 200 }] },
-  { name: "BRUCELLA", prices: [{ variant: "", price: 850 }] },
-  { name: "THYROID PROFILE", prices: [{ variant: "", price: 700 }] },
-  { name: "CD4, CD8", prices: [{ variant: "", price: 2200 }] },
-  { name: "WESTREN'S BLOT", prices: [{ variant: "", price: 3000 }] },
-  { name: "HBA1C", prices: [{ variant: "", price: 850 }] }
+  // HAEMATOLOGY
+  { name: "CBC", prices: [{ variant: "Standard", price: 300 }, { variant: "Premium", price: 350 }], category: "HAEMATOLOGY" },
+  { name: "Hb%", prices: [{ variant: "", price: 100 }], category: "HAEMATOLOGY" },
+  { name: "TC/DC", prices: [{ variant: "", price: 100 }], category: "HAEMATOLOGY" },
+  { name: "PLATELET COUNT", prices: [{ variant: "", price: 100 }], category: "HAEMATOLOGY" },
+  { name: "ESR", prices: [{ variant: "", price: 200 }], category: "HAEMATOLOGY" },
+  { name: "BL. GROUP & RH TYPE", prices: [{ variant: "", price: 100 }], category: "HAEMATOLOGY" },
+  { name: "BT/CT", prices: [{ variant: "", price: 150 }], category: "HAEMATOLOGY" },
+  { name: "A.E. COUNT", prices: [{ variant: "", price: 200 }], category: "HAEMATOLOGY" },
+  { name: "MP-BY KIT", prices: [{ variant: "", price: 250 }], category: "HAEMATOLOGY" },
+  { name: "MAL-PARASITE", prices: [{ variant: "", price: 200 }], category: "HAEMATOLOGY" },
+  { name: "M.T. TEST", prices: [{ variant: "", price: 300 }], category: "HAEMATOLOGY" },
+
+  // SEROLOGY TEST
+  { name: "WIDAL TEST", prices: [{ variant: "", price: 100 }], category: "SEROLOGY TEST" },
+  { name: "V.D.R.L", prices: [{ variant: "", price: 200 }], category: "SEROLOGY TEST" },
+  { name: "HCL", prices: [{ variant: "", price: 200 }], category: "SEROLOGY TEST" },
+  { name: "BRUCELLA", prices: [{ variant: "", price: 850 }], category: "SEROLOGY TEST" },
+  { name: "R.A. FACTOR", prices: [{ variant: "", price: 1000 }], category: "SEROLOGY TEST" },
+  { name: "TRIDOT", prices: [{ variant: "", price: 25 }], category: "SEROLOGY TEST" },
+  { name: "HBsAg", prices: [{ variant: "", price: 200 }], category: "SEROLOGY TEST" },
+  { name: "C.R.P", prices: [{ variant: "", price: 350 }], category: "SEROLOGY TEST" },
+  { name: "DAENGUE (IgG IgM)", prices: [{ variant: "", price: 650 }], category: "SEROLOGY TEST" },
+  { name: "CHEKENGUNNYA TEST", prices: [{ variant: "", price: 600 }], category: "SEROLOGY TEST" },
+  { name: "ASLO", prices: [{ variant: "", price: 1200 }], category: "SEROLOGY TEST" },
+
+  // URINE TEST
+  { name: "Alb", prices: [{ variant: "", price: 100 }], category: "URINE TEST" },
+  { name: "SUGAR", prices: [{ variant: "", price: 100 }], category: "URINE TEST" },
+  { name: "MICRO", prices: [{ variant: "", price: 100 }], category: "URINE TEST" },
+  { name: "B. SALT & PIGMENT", prices: [{ variant: "", price: 200 }], category: "URINE TEST" },
+  { name: "PREGNANCY TEST", prices: [{ variant: "", price: 200 }], category: "URINE TEST" },
+  { name: "SEMEN ANALYSIS", prices: [{ variant: "", price: 500 }], category: "URINE TEST" },
+
+  // BIO-CHEMISTRY TEST
+  { name: "BI. SUGAR RANDOM", prices: [{ variant: "", price: 100 }], category: "BIO-CHEMISTRY TEST" },
+  { name: "FASTING/PAST LUNCH", prices: [{ variant: "", price: 200 }], category: "BIO-CHEMISTRY TEST" },
+  { name: "Sr. BILURUBIN", prices: [{ variant: "", price: 400 }], category: "BIO-CHEMISTRY TEST" },
+  { name: "S.G.O.T", prices: [{ variant: "", price: 200 }], category: "BIO-CHEMISTRY TEST" },
+  { name: "S.G.P.T", prices: [{ variant: "", price: 200 }], category: "BIO-CHEMISTRY TEST" },
+  { name: "UREA", prices: [{ variant: "", price: 200 }], category: "BIO-CHEMISTRY TEST" },
+  { name: "CREATININE", prices: [{ variant: "", price: 200 }], category: "BIO-CHEMISTRY TEST" },
+  { name: "URIC ACID", prices: [{ variant: "", price: 200 }], category: "BIO-CHEMISTRY TEST" },
+  { name: "SERUM ELECTROLYTE", prices: [{ variant: "", price: 650 }], category: "BIO-CHEMISTRY TEST" },
+  { name: "S. CHOLESTEROL", prices: [{ variant: "", price: 650 }], category: "BIO-CHEMISTRY TEST" },
+  { name: "TRIGLYCIRID", prices: [{ variant: "", price: 650 }], category: "BIO-CHEMISTRY TEST" },
+  { name: "LIPID PROFILE", prices: [{ variant: "", price: 200 }], category: "BIO-CHEMISTRY TEST" },
+  { name: "LFT", prices: [{ variant: "", price: 650 }], category: "BIO-CHEMISTRY TEST" },
+  { name: "KFT", prices: [{ variant: "", price: 600 }], category: "BIO-CHEMISTRY TEST" },
+  { name: "S. CALCIUM", prices: [{ variant: "", price: 200 }], category: "BIO-CHEMISTRY TEST" },
+  { name: "THYROID PROFILE", prices: [{ variant: "", price: 700 }], category: "BIO-CHEMISTRY TEST" },
+  { name: "T3, T4, TSH", prices: [{ variant: "", price: 750 }], category: "BIO-CHEMISTRY TEST" },
+  { name: "CD4, CD8", prices: [{ variant: "", price: 2200 }], category: "BIO-CHEMISTRY TEST" },
+  { name: "WESTREN'S BLOT", prices: [{ variant: "", price: 3000 }], category: "BIO-CHEMISTRY TEST" },
+  { name: "HBA1C", prices: [{ variant: "", price: 850 }], category: "BIO-CHEMISTRY TEST" }
 ];
 
 const BillingForm = () => {
@@ -60,6 +107,7 @@ const BillingForm = () => {
   const [selectedTest, setSelectedTest] = useState("");
   const [selectedPrice, setSelectedPrice] = useState<number | null>(null);
   const [selectedVariant, setSelectedVariant] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
 
   const handleDoctorToggle = (doctor: string) => {
     setPatientData(prev => ({
@@ -136,6 +184,11 @@ const BillingForm = () => {
   };
 
   const currentTest = DIAGNOSTIC_TESTS.find(test => test.name === selectedTest);
+  
+  const filteredTests = DIAGNOSTIC_TESTS.filter(test =>
+    test.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    test.category.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <div className="min-h-screen bg-background py-8 px-4">
@@ -239,54 +292,76 @@ const BillingForm = () => {
             <CardDescription>Add diagnostic tests and their pricing</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="test">Select Test</Label>
-                <Select value={selectedTest} onValueChange={setSelectedTest}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Choose diagnostic test" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {DIAGNOSTIC_TESTS.map((test) => (
-                      <SelectItem key={test.name} value={test.name}>
-                        {test.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <Label htmlFor="search">Search Tests</Label>
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    id="search"
+                    placeholder="Search by test name or category..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="pl-10"
+                  />
+                </div>
               </div>
               
-              {currentTest && (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="price">Price Option</Label>
-                  <Select 
-                    value={selectedPrice?.toString() || ""} 
-                    onValueChange={(value) => {
-                      const price = parseInt(value);
-                      setSelectedPrice(price);
-                      const priceOption = currentTest.prices.find(p => p.price === price);
-                      setSelectedVariant(priceOption?.variant || "");
-                    }}
-                  >
+                  <Label htmlFor="test">Select Test</Label>
+                  <Select value={selectedTest} onValueChange={setSelectedTest}>
                     <SelectTrigger>
-                      <SelectValue placeholder="Select price" />
+                      <SelectValue placeholder="Choose diagnostic test" />
                     </SelectTrigger>
-                    <SelectContent>
-                      {currentTest.prices.map((priceOption, index) => (
-                        <SelectItem key={index} value={priceOption.price.toString()}>
-                          ₹{priceOption.price} {priceOption.variant && `(${priceOption.variant})`}
+                    <SelectContent className="max-h-60">
+                      {filteredTests.map((test) => (
+                        <SelectItem key={test.name} value={test.name}>
+                          <div className="flex flex-col">
+                            <span>{test.name}</span>
+                            <span className="text-xs text-muted-foreground">{test.category}</span>
+                          </div>
                         </SelectItem>
                       ))}
+                      {filteredTests.length === 0 && (
+                        <div className="p-2 text-sm text-muted-foreground">No tests found</div>
+                      )}
                     </SelectContent>
                   </Select>
                 </div>
-              )}
-              
-              <div className="flex items-end">
-                <Button onClick={addTest} className="w-full">
-                  <Plus className="h-4 w-4 mr-2" />
-                  Add Test
-                </Button>
+                
+                {currentTest && (
+                  <div className="space-y-2">
+                    <Label htmlFor="price">Price Option</Label>
+                    <Select 
+                      value={selectedPrice?.toString() || ""} 
+                      onValueChange={(value) => {
+                        const price = parseInt(value);
+                        setSelectedPrice(price);
+                        const priceOption = currentTest.prices.find(p => p.price === price);
+                        setSelectedVariant(priceOption?.variant || "");
+                      }}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select price" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {currentTest.prices.map((priceOption, index) => (
+                          <SelectItem key={index} value={priceOption.price.toString()}>
+                            ₹{priceOption.price} {priceOption.variant && `(${priceOption.variant})`}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                )}
+                
+                <div className="flex items-end">
+                  <Button onClick={addTest} className="w-full">
+                    <Plus className="h-4 w-4 mr-2" />
+                    Add Test
+                  </Button>
+                </div>
               </div>
             </div>
           </CardContent>
